@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:afak="http://afak" xmlns:afak2="http://afak2" xmlns:afak3="http://afak3" xmlns:finall="http://finall.localhost:1997/finall">
+  <process name="finall:finall">
+    <active>true</active>
+    <retired>false</retired>
+    <process-events generate="all"/>
+    <provide partnerLink="client">
+      <service name="finall:finallService" port="finallPort"/>
+    </provide>
+    <invoke partnerLink="inscriptionFacultePL">
+      <service name="afak:Faculte" port="FaculteHttpSoap11Endpoint"/>
+    </invoke>
+    <invoke partnerLink="inscriptionBibliooPL">
+      <service name="afak2:Bibliotheeque" port="BibliotheequeHttpSoap11Endpoint"/>
+    </invoke>
+    <invoke partnerLink="inscriptionCoomplexePL">
+      <service name="afak3:Compleexe" port="CompleexeHttpSoap11Endpoint"/>
+    </invoke>
+  </process>
+</deploy>

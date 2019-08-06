@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://finall.localhost:1997/finall" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://afak" xmlns:wsdl1="http://afak2" xmlns:wsdl2="http://afak3" name="finall" targetNamespace="http://finall.localhost:1997/finall">
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="inscrBiblioPLT">
+    <plnk:role name="inscrBiblioPLR" portType="wsdl1:BibliotheequePortType"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="inscriptionFacultePLT">
+    <plnk:role name="inscriptionFacultePLR" portType="wsdl:FacultePortType"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="inscriptionFacultePLType">
+    <plnk:role name="inscriptionFacultePLR" portType="wsdl:FacultePortType"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="inscriptionBibliooPLT">
+    <plnk:role name="inscriptionBibliooPLR" portType="wsdl1:BibliotheequePortType"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="inscriptionCoomplexePLT">
+    <plnk:role name="inscriptionCoomplexePLR" portType="wsdl2:CompleexePortType"/>
+  </plnk:partnerLinkType>
+    <import location="Bibliotheeque.wsdl" namespace="http://afak2"/>
+    <import location="Faculte.wsdl" namespace="http://afak"/>
+    <import location="Compleexe.wsdl" namespace="http://afak3"/>
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://finall.localhost:1997/finall">
+
+            <element name="finallRequest">
+                <complexType>
+                    <sequence>
+                    	<element name="cin" type="string"/>
+                    	<element name="nom" type="string"/>
+
+                    	<element name="b" type="string"/>
+                    	<element name="c" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="finallResponse">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </types>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type defintions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="finallRequestMessage">
+        <part element="tns:finallRequest" name="payload"/>
+    </message>
+    <message name="finallResponseMessage">
+        <part element="tns:finallResponse" name="payload"/>
+    </message>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the finall BPEL process -->
+    <portType name="finall">
+        <operation name="process">
+            <input message="tns:finallRequestMessage"/>
+            <output message="tns:finallResponseMessage"/>
+        </operation>
+    </portType>   
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PARTNER LINK TYPE DEFINITION
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="finall">
+        <plnk:role name="finallProvider" portType="tns:finall"/>
+    </plnk:partnerLinkType>
+    
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION - Defines the message format and protocol details
+     for a web service.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <binding name="finallBinding" type="tns:finall">
+    	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    	<operation name="process">
+    		<soap:operation soapAction="http://finall.localhost:1997/finall/process"/>
+    		<input>
+    			<soap:body use="literal"/>
+    		</input>
+    		<output>
+    			<soap:body use="literal"/>
+    		</output>
+    	</operation>
+    </binding>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION - A service groups a set of ports into
+     a service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <service name="finallService">
+    	<port binding="tns:finallBinding" name="finallPort">
+    		<soap:address location="http://localhost:1997/ode/processes/finall"/>
+    	</port>
+    </service>
+</definitions>

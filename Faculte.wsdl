@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="http://afak" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" targetNamespace="http://afak">
+    <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://afak">
+            <xs:element name="exist">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="cin" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="nom" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="existResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="existRequest">
+        <wsdl:part name="parameters" element="ns:exist"/>
+    </wsdl:message>
+    <wsdl:message name="existResponse">
+        <wsdl:part name="parameters" element="ns:existResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="FacultePortType">
+        <wsdl:operation name="exist">
+            <wsdl:input message="ns:existRequest" wsaw:Action="urn:exist"/>
+            <wsdl:output message="ns:existResponse" wsaw:Action="urn:existResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="FaculteSoap11Binding" type="ns:FacultePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="exist">
+            <soap:operation soapAction="urn:exist" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="FaculteSoap12Binding" type="ns:FacultePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="exist">
+            <soap12:operation soapAction="urn:exist" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="FaculteHttpBinding" type="ns:FacultePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="exist">
+            <http:operation location="exist"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Faculte">
+        <wsdl:port name="FaculteHttpSoap11Endpoint" binding="ns:FaculteSoap11Binding">
+            <soap:address location="http://localhost:8081/LundiFaculte/services/Faculte.FaculteHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="FaculteHttpSoap12Endpoint" binding="ns:FaculteSoap12Binding">
+            <soap12:address location="http://localhost:8081/LundiFaculte/services/Faculte.FaculteHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="FaculteHttpEndpoint" binding="ns:FaculteHttpBinding">
+            <http:address location="http://localhost:8081/LundiFaculte/services/Faculte.FaculteHttpEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
